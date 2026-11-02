@@ -25,6 +25,12 @@
 # Visual Studio cache directory
 .vs/
 
+# Visual Studio Code settings directory
+.vscode/
+
+# Visual Studio solution file (new format)
+*.slnx
+
 # Gradle cache directory
 .gradle/
 

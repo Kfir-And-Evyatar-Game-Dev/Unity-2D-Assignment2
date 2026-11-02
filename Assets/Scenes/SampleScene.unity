@@ -535,7 +535,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 386fe85a2c245be4c96190817a57d092, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::NewMonoBehaviourScript
-  baseSize: 5
+  landscapeSize: 5
 --- !u!1 &594758159
 GameObject:
   m_ObjectHideFlags: 0

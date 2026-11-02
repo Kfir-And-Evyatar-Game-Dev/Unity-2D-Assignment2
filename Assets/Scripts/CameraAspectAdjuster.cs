@@ -1,15 +1,17 @@
-
 using UnityEngine;
 
-// Adjusts the camera size to different screen aspect ratios.
+// Keeps every object the same size on screen when the device rotates
+// between landscape and portrait, by changing only the camera's orthographicSize.
 public class CameraAspectAdjuster : MonoBehaviour
 {
-    // Default camera size for a 16:9 screen.
-    [SerializeField] private float baseSize = 5f;
+    // Camera size in landscape: half of the visible world height, in world units.
+    [SerializeField] private float landscapeSize = 5f;
 
     private Camera cam;
+    private int lastWidth;
+    private int lastHeight;
 
-    void Start()
+    void Awake()
     {
         // Get the camera component.
         cam = GetComponent<Camera>();
@@ -17,19 +19,20 @@ public class CameraAspectAdjuster : MonoBehaviour
 
     void Update()
     {
-        // Calculate the current screen aspect ratio.
-        float aspect = (float)Screen.width / Screen.height;
-        float baseAspect = 16f / 9f;
+        // Recalculate only when the screen size or orientation changes.
+        if (Screen.width == lastWidth && Screen.height == lastHeight)
+        {
+            return;
+        }
 
-        if (aspect < baseAspect)
-        {
-            // Zoom out on narrower screens to preserve visible width.
-            cam.orthographicSize = baseSize * baseAspect / aspect;
-        }
-        else
-        {
-            // Use the default size on wider screens.
-            cam.orthographicSize = baseSize;
-        }
+        lastWidth = Screen.width;
+        lastHeight = Screen.height;
+
+        // orthographicSize is half of the visible height in world units.
+        // On screen, one world unit takes (screen height / (2 * size)) pixels.
+        // To keep that the same after rotating, the size must grow with the
+        // screen height relative to the short side of the screen.
+        int shortSide = Mathf.Min(Screen.width, Screen.height);
+        cam.orthographicSize = landscapeSize * Screen.height / shortSide;
     }
 }
